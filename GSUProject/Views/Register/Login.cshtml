@@ -1,0 +1,165 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+}
+
+<div class="col-md-10 col-md-offset-1">
+    <div class="well">
+        <table class="table table-bordered">
+
+            <thead>
+                <tr class="Success">
+                    <td colspan="5">
+                        <h2>Login Page</h2>
+                    </td>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>User Name</td>
+                    <td>
+                        @*<%--<asp:TextBox ID="TextBoxUser" runat="server"></asp:TextBox>--%>*@
+                        <input type="text" id="txtUserName" placeholder="User Name" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td style="height: 39px">Password</td>
+                    <td style="height: 39px">
+                        @*<%--<asp:TextBox ID="TextBoxPassword" runat="server"></asp:TextBox>--%>*@
+                        <input type="password" id="txtPassword" placeholder="Password" />
+                    </td>
+                </tr>
+
+                <tr class="Success">
+                    <td colspan="3">
+                        &nbsp;
+                        @*<%--<asp:CheckBox ID="CheckBoxrem" runat="server" Text="Remember me?" />--%>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <%--<asp:Button ID="ButtonLogin" runat="server" CssClass="btn-success" Height="46px" Text="Login" Width="96px" OnClick="ButtonLogin_Click" />--%>*@
+                        <input id="btnLogin" class="btn btn-success" type="button" value="Login" />
+                        &nbsp;
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="modal fade" tabindex="-1" id="successmodal"
+             data-keyboard="false" data-bakcdrop="static">
+            <div class="modal-dialouge modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">
+                            &times;
+                            <h3>Success</h3>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h2>login success</h2>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-danger">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="error" class="alert alert-danger collapse">
+            <a id="Close" class="close" href="#">&times;</a>
+            <div id="ErrorText"></div>
+        </div>
+       
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery.cookie-1.4.1.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#Close').click(function () {
+
+            $('#error').hide('fade');
+        });
+        // getCookies();
+        //validateRoles(utId);
+        //ValidateUserTypeID();
+        $('#btnLogin').click(function () {
+
+            {
+
+                //$.ajax({
+                //    url: 'http://localhost/EventsGSUBusinessLibrary/api/account/Register',
+                //    method: 'POST',
+                //    data: {
+                //        username: $('#txtUserName').val()
+                //        email: $('#txtEmail').val(),
+                //        password: $('#txtPassword').val(),
+                //        confirmPassword: $('#txtConfirmPassword').val()
+                //    },
+                //    success: function () {
+                //         $('#successmodal').modal(PopOut_Show);
+                //    },
+                //    error: function (jqXHR) {
+                //        $('#ErrorText').text(jqXHR.responseText);
+                //        $('#error').show('fade');
+
+                //    }
+
+                //});
+            }
+
+            $.ajax({
+                url: 'Login',
+                method: 'POST',
+                data: {
+                    username: $('#txtUserName').val(),
+                    userpassword: $('#txtPassword').val(),
+                },
+                success: function (response) {
+                    if (response.UFlag) {
+                        //Set Global UserId Here
+                        //$('#globalUserId').val(response.UserID);
+                        $.cookie('UserID', response.UserID, { expires: 2, path: '/' });
+                        $.cookie('UserTypeID', response.UserTypeID, { expires: 2, path: '/' });
+                        //
+                        window.location.href = "http://localhost/EventsGSU_FA2018/Account/Index";
+                    }
+                    else {
+                        $('#ErrorText').text(response.UMessage);
+                        $('#error').show('fade');
+                    }
+                    //$('#successmodal').text(response.UserEmail);
+                    //$("#error").show('fade');
+
+                },
+                error: function (error) {
+                    $('#ErrorText').text(error.responseText);
+                    $('#error').show('fade');
+
+                }
+
+            });
+
+        });
+        // function ValidateUserTypeID()
+        //{
+        //    if (utId == 1)
+        //    {
+        //       window.location.href = "http://localhost/EventsGSU_FA2018/Account/Index";
+        //     }
+        //      if (utId == 2)
+        //    {
+        //       window.location.href = "http://localhost/EventsGSU_FA2018/Account/Index";
+        //     }
+        //      if (utId == 3)
+        //    {
+        //       window.location.href = "http://localhost/EventsGSU_FA2018/Account/Index";
+        //    }
+        //}
+
+    });
+
+</script>
+
